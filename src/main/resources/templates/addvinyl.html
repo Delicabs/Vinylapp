@@ -8,44 +8,48 @@
      <link href="https://fonts.googleapis.com/css?family=Lalezar" rel="stylesheet">
 </head>
 <body>
+   <nav class="navbar navbar-dark bg-dark">
+     <a class="navbar-brand" href="#">Add new vinyl to collection</a>
+     </nav>
+
 
 <div class="container">
-    <h1>Edit Vinyl information</h1>
+
 
 
     <!--/*@thymesVar id="vinyl" type="templates"*/-->
     <form th:object="${vinyl}" th:action="@{save}" action="#" method="post">
         <div class="form-group">
             <input type="hidden" th:field="*{id}" class="form-control"/>
-            <label for="artist">Artist name</label>
+            <label class="label" for="artist">Artist name</label>
             <input class="form-control" type="text" id="artist" th:field="*{artist}"/>
             <div style="clear: both; display: block; height: 10px;"></div>
 
-            <label for="album">Album name</label>
+            <label class="label" for="album">Album name</label>
             <input class="form-control" type="text" id="album" th:field="*{albumName}"/>
             <div style="clear: both; display: block; height: 10px;"></div>
 
-            <label for="label">Label name</label>
+            <label class="label" for="label">Label name</label>
             <input class="form-control" type="text" id="label" th:field="*{label}"/>
             <div style="clear: both; display: block; height: 10px;"></div>
 
-            <label for="year">Publish year</label>
+            <label class="label" for="year">Publish year</label>
             <input class="form-control" type="text" id="year" th:field="*{year}"/>
             <div style="clear: both; display: block; height: 10px;"></div>
 
-            <label for="price">buy price</label>
+            <label class="label" for="price">buy price</label>
             <input class="form-control" type="number" step="0.01" id="price" th:field="*{price}"/>
             <div style="clear: both; display: block; height: 10px;"></div>
 
-             <label for="quantity">Quantity</label>
+             <label class="label" for="quantity">Quantity</label>
              <input class="form-control" type="number" id="amount" th:field="*{amount}"/>
              <div style="clear: both; display: block; height: 10px;"></div>
 
-             <label for="lastprice">Worth</label>
+             <label class="label" for="lastprice">Worth</label>
              <input class="form-control" type="number" step="0.01" id="lastprice" th:field="*{lastSoldPrice}"/>
              <div style="clear: both; display: block; height: 10px;"></div>
 
-            <label for="glist">Genre</label>
+            <label class="label" for="glist">Genre</label>
             <select id="glist" th:field="*{genre}" class="form-control">
                 <option th:each="genre: ${genres}" th:value="${genre.genreId}"
                         th:text="${genre.type}"></option>

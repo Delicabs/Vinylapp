@@ -21,6 +21,7 @@ public class VinylController {
     private double totalValue = 0.00;
     private int totalAmount = 0;
     private double totalWorth = 0.00;
+
     @Autowired
     private VinylRepository vrepository;
     @Autowired
@@ -28,13 +29,13 @@ public class VinylController {
 
     @RequestMapping("/login")
     public String login() {
-        //session.setAttribute("Juan","Value");
+
         return "login";
 
     }
 
 
-    //Shows all books
+    //Shows all vinyls in vrepository
     @RequestMapping(value ="/vinyllist")
     public String vinylList(Model model) {
         totalValue = 0.00;
@@ -49,19 +50,17 @@ public class VinylController {
         model.addAttribute("totalvalue", totalValue);
         model.addAttribute("totalworth", totalWorth);
         model.addAttribute("vinyls", vrepository.findAll());
-        // String value = (String) session.getAttribute("Juan");
-        //System.out.println(value);
         return "vinyllist";
     }
 
-    // RESTful service to get all students
+    // RESTful service to get all all vinyls in JSON
     @RequestMapping(value = "/vinyls")
     public @ResponseBody
     List<Vinyl> vinylListRest() {
         return (List<Vinyl>) vrepository.findAll();
     }
 
-    //RESTful service to get stuent by id
+    //RESTful service to get vinyls by id in JSON
     @RequestMapping(value = "/vinyl/{id}", method = RequestMethod.GET)
     public @ResponseBody
     Optional<Vinyl> findBookRest(@PathVariable("id") Long vinylId) {
@@ -69,7 +68,7 @@ public class VinylController {
     }
 
 
-    //Delete book
+    //Delete vinyl allowed by ADMIN only
     @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public String deleteVinyl(@PathVariable("id") Long vinylId, Model model) {
@@ -89,7 +88,7 @@ public class VinylController {
         return "redirect:../vinyllist";
     }
 
-    //Add new book
+    //Add new vinyl to your repository
     @RequestMapping(value = "/addvinyl")
     public String addVinyl(Model model) {
         model.addAttribute("vinyl", new Vinyl());
@@ -97,7 +96,7 @@ public class VinylController {
         return "addvinyl";
     }
 
-    // Edit existing book
+    // Edit existing vinyl
     @RequestMapping(value = "/edit/{id}")
     public String editVinyl(@PathVariable("id") Long vinylId, Model model) {
         for (int i = 0; i < vinylArrayList.size(); i++){
