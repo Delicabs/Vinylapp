@@ -18,9 +18,6 @@ import java.util.Optional;
 @Controller
 public class VinylController {
     private List<Vinyl> vinylArrayList = new ArrayList<>();
-    private double totalValue = 0.00;
-    private int totalAmount = 0;
-    private double totalWorth = 0.00;
 
     @Autowired
     private VinylRepository vrepository;
@@ -38,18 +35,10 @@ public class VinylController {
     //Shows all vinyls in vrepository
     @RequestMapping(value ="/vinyllist")
     public String vinylList(Model model) {
-        totalValue = 0.00;
-        totalAmount = 0;
-        totalWorth = 0.00;
-        for (int i = 0; i < vinylArrayList.size(); i++){
-            totalAmount  += vinylArrayList.get(i).getAmount();
-            totalValue += vinylArrayList.get(i).getPrice();
-            totalWorth += vinylArrayList.get(i).getLastSoldPrice();
-        }
-        model.addAttribute("totalamount", totalAmount);
-        model.addAttribute("totalvalue", totalValue);
-        model.addAttribute("totalworth", totalWorth);
         model.addAttribute("vinyls", vrepository.findAll());
+        model.addAttribute("totalVinylAmount", vrepository.getTotalAmount());
+        model.addAttribute("totalSpent", vrepository.getTotalSpent());
+        model.addAttribute("totalValue",vrepository.getTotalValue());
         return "vinyllist";
     }
 
@@ -72,18 +61,6 @@ public class VinylController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public String deleteVinyl(@PathVariable("id") Long vinylId, Model model) {
-        for (int i = 0; i < vinylArrayList.size(); i++){
-            if (vinylArrayList.get(i).getId() == vinylId){
-                vinylArrayList.remove(i); } }
-
-        totalValue = 0.00;
-        totalWorth = 0.00;
-        totalAmount = 0;
-        for (int i = 0; i < vinylArrayList.size(); i++){
-            totalAmount  += vinylArrayList.get(i).getAmount();
-            totalValue += vinylArrayList.get(i).getPrice();
-            totalWorth += vinylArrayList.get(i).getLastSoldPrice();
-        }
         vrepository.deleteById(vinylId);
         return "redirect:../vinyllist";
     }
@@ -99,22 +76,6 @@ public class VinylController {
     // Edit existing vinyl
     @RequestMapping(value = "/edit/{id}")
     public String editVinyl(@PathVariable("id") Long vinylId, Model model) {
-        for (int i = 0; i < vinylArrayList.size(); i++){
-            if (vinylArrayList.get(i).getId() == vinylId){
-                vinylArrayList.remove(i); }
-        }
-        totalValue = 0.00;
-        totalWorth = 0.00;
-        totalAmount = 0;
-        for (int i = 0; i < vinylArrayList.size(); i++){
-            totalAmount  += vinylArrayList.get(i).getAmount();
-            totalValue += vinylArrayList.get(i).getPrice();
-        }
-
-        model.addAttribute("totalamount", totalAmount);
-        model.addAttribute("totalvalue", totalValue);
-        model.addAttribute("totalworth", totalWorth);
-
         model.addAttribute("vinyl", vrepository.findById(vinylId));
         model.addAttribute("genres", grepository.findAll());
         return "edit";
@@ -124,7 +85,6 @@ public class VinylController {
     //Save vinyl
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public String save(Vinyl vinyl) {
-        vinylArrayList.add(vinyl);
         vrepository.save(vinyl);
         return "redirect:vinyllist";
     }
