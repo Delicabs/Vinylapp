@@ -9,12 +9,13 @@ import java.util.List;
 public interface VinylRepository extends CrudRepository<Vinyl,Long> {
     List<Vinyl> findByArtist(@Param("artist")String artist);
 
-    @Query("SELECT SUM (v.amount) from Vinyl v")
-    int getTotalAmount();
+
+    @Query("SELECT SUM (v.amount) from Vinyl v where  v.amount IS NOT NULL")
+    Integer getTotalAmount();
     @Query("SELECT SUM (v.price)from Vinyl v")
-    int getTotalSpent();
+    Double getTotalSpent();
     @Query("SELECT SUM (v.lastSoldPrice) from Vinyl v")
-    int getTotalValue();
+    Double getTotalValue();
 
 
 }
